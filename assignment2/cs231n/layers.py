@@ -170,12 +170,13 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         # variance, storing your result in the running_mean and running_var   #
         # variables.                                                          #
         #######################################################################
-        sample_mean = np.mean(x, axis=0)
-        sample_var = np.var(x, axis=0)
-        x_hat = (x - sample_mean) / (np.sqrt(sample_var + eps))
-        out = gamma * x_hat + beta
+        
+        sample_mean = np.mean(x, axis=0)  #每一列均值
+        sample_var = np.var(x, axis=0)    #每一列方差
+        x_hat = (x - sample_mean) / (np.sqrt(sample_var + eps)) #归一化后
+        out = gamma * x_hat + beta   #变成新的均值和方差
         cache = (gamma, x, sample_mean, sample_var, eps, x_hat)
-        running_mean = momentum * running_mean + (1 - momentum) * sample_mean
+        running_mean = momentum * running_mean + (1 - momentum) * sample_mean #然后把均值和方差在每一步都进行指数加权平均
         running_var = momentum * running_var + (1 - momentum) * sample_var
         #######################################################################
         #                           END OF YOUR CODE                          #
